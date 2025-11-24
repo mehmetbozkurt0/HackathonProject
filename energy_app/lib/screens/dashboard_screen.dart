@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
-import '../widgets/dashboard_widgets.dart';
+import '../widgets/dashboard_widgets.dart'; // Widget'ları çekiyoruz
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
           const HeaderSection(),
           const SizedBox(height: 30),
 
-          // KARTLAR (Responsive) - EnergyCardType eklendi
+          // KARTLAR (Responsive)
           if (isDesktop)
             const Row(
               children: [
@@ -29,7 +29,7 @@ class DashboardScreen extends StatelessWidget {
                     icon: Icons.wb_sunny_rounded,
                     color: AppColors.neonGreen,
                     subtitle: "+%12 verim artışı",
-                    cardType: EnergyCardType.production, // Yeni
+                    cardType: EnergyCardType.production, // EKLENDİ ✅
                   ),
                 ),
                 SizedBox(width: 20),
@@ -40,7 +40,7 @@ class DashboardScreen extends StatelessWidget {
                     icon: Icons.home_filled,
                     color: AppColors.neonRed,
                     subtitle: "Klima aktif",
-                    cardType: EnergyCardType.consumption, // Yeni
+                    cardType: EnergyCardType.consumption, // EKLENDİ ✅
                   ),
                 ),
                 SizedBox(width: 20),
@@ -51,7 +51,7 @@ class DashboardScreen extends StatelessWidget {
                     icon: Icons.bolt,
                     color: AppColors.neonBlue,
                     subtitle: "₺42.50 Günlük Kazanç",
-                    cardType: EnergyCardType.gridSale, // Yeni
+                    cardType: EnergyCardType.gridSale, // EKLENDİ ✅
                   ),
                 ),
               ],
@@ -65,7 +65,7 @@ class DashboardScreen extends StatelessWidget {
                   icon: Icons.wb_sunny_rounded,
                   color: AppColors.neonGreen,
                   subtitle: "+%12 verim artışı",
-                  cardType: EnergyCardType.production, // Yeni
+                  cardType: EnergyCardType.production, // EKLENDİ ✅
                 ),
                 SizedBox(height: 16),
                 EnergyStatusCard(
@@ -74,7 +74,7 @@ class DashboardScreen extends StatelessWidget {
                   icon: Icons.home_filled,
                   color: AppColors.neonRed,
                   subtitle: "Klima aktif",
-                  cardType: EnergyCardType.consumption, // Yeni
+                  cardType: EnergyCardType.consumption, // EKLENDİ ✅
                 ),
                 SizedBox(height: 16),
                 EnergyStatusCard(
@@ -83,7 +83,7 @@ class DashboardScreen extends StatelessWidget {
                   icon: Icons.bolt,
                   color: AppColors.neonBlue,
                   subtitle: "₺42.50 Günlük Kazanç",
-                  cardType: EnergyCardType.gridSale, // Yeni
+                  cardType: EnergyCardType.gridSale, // EKLENDİ ✅
                 ),
               ],
             ),
@@ -113,33 +113,15 @@ class DashboardScreen extends StatelessWidget {
               }
             },
           ),
-
+          
           const SizedBox(height: 30),
-
+          
           // LİSTE (Son İşlemler)
-          const Text(
-            "Sistem Kayıtları",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+          const Text("Sistem Kayıtları", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 15),
-          const LogListItem(
-            time: "14:30",
-            message: "Batarya şarjı başlatıldı (Optimizasyon)",
-            type: "AI",
-            amount: "+2.0 kW",
-          ),
-          const LogListItem(
-            time: "13:15",
-            message: "Yüksek tüketim uyarısı: Fırın",
-            type: "WARN",
-            amount: "-3.5 kW",
-          ),
-          const LogListItem(
-            time: "12:00",
-            message: "Puant saat satış işlemi",
-            type: "SELL",
-            amount: "+4.1 kW",
-          ),
+          const LogListItem(time: "14:30", message: "Batarya şarjı başlatıldı (Optimizasyon)", type: "AI", amount: "+2.0 kW"),
+          const LogListItem(time: "13:15", message: "Yüksek tüketim uyarısı: Fırın", type: "WARN", amount: "-3.5 kW"),
+          const LogListItem(time: "12:00", message: "Puant saat satış işlemi", type: "SELL", amount: "+4.1 kW"),
         ],
       ),
     );

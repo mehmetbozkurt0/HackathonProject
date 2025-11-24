@@ -77,7 +77,7 @@ class AIOptimizationScreen extends StatelessWidget {
 
           const SizedBox(height: 30),
 
-          // ANOMALİ TESPİTİ (İŞL.11)
+          // ANOMALİ TESPİTİ
           const Text("Sistem Sağlığı & Anomaliler", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 15),
           GlassContainer(

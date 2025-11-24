@@ -482,7 +482,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "Raporlarım (İŞL.03)",
+                "Raporlarım",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,

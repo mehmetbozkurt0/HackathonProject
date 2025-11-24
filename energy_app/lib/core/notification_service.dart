@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'constants.dart'; // AppColors için
 
-// Bildirim Tipleri (Kategoriler)
-enum NotificationType {
-  critical, // Kırmızı: Arıza, Tehlike
-  warning, // Turuncu: Düşük Batarya, Verim Düşüklüğü
-  info, // Mavi: Hava Durumu, Tarife Bilgisi
-  success, // Yeşil: Tasarruf Hedefi, Tam Şarj
-}
+// Bildirim Tipleri
+enum NotificationType { critical, warning, info, success }
 
 // Bildirim Modeli
 class AppNotification {
@@ -28,14 +23,16 @@ class AppNotification {
   });
 }
 
-// Bildirim Servisi (Mock Data Havuzu)
+// Bildirim Servisi (Singleton)
 class NotificationService {
-  // Singleton yapısı (Uygulamanın her yerinden aynı listeye erişmek için)
   static final NotificationService _instance = NotificationService._internal();
   factory NotificationService() => _instance;
   NotificationService._internal();
 
-  // Mock Bildirim Verileri
+  // CANLI TAKİP İÇİN EKLENDİ: Okunmamış sayısını dinleyen bir yayıncı
+  // Başlangıçta 2 okunmamış var kabul ediyoruz (Mock data gereği)
+  final ValueNotifier<int> unreadCountNotifier = ValueNotifier<int>(2);
+
   final List<AppNotification> _notifications = [
     AppNotification(
       id: '1',
@@ -59,7 +56,7 @@ class NotificationService {
       message: 'Bataryalarınız %100 doluluk oranına ulaştı.',
       timestamp: DateTime.now().subtract(const Duration(days: 1)),
       type: NotificationType.success,
-      isRead: true, // Okunmuş
+      isRead: true,
     ),
     AppNotification(
       id: '4',
@@ -77,62 +74,45 @@ class NotificationService {
       type: NotificationType.info,
       isRead: true,
     ),
-    // 1 haftadan eski veri (Test için - Filtreye takılmalı)
-    AppNotification(
-      id: '6',
-      title: 'Eski Bildirim',
-      message: 'Bu bildirim 8 gün öncesine ait.',
-      timestamp: DateTime.now().subtract(const Duration(days: 8)),
-      type: NotificationType.info,
-      isRead: true,
-    ),
   ];
 
-  // 1. Dashboard İçin: Sadece Okunmamışlar
   List<AppNotification> getUnreadNotifications() {
     return _notifications.where((n) => !n.isRead).toList();
   }
 
-  // 2. Ayarlar İçin: Son 1 Haftanın Tümü
   List<AppNotification> getPastWeekNotifications() {
     final oneWeekAgo = DateTime.now().subtract(const Duration(days: 7));
-    return _notifications
-        .where((n) => n.timestamp.isAfter(oneWeekAgo))
-        .toList();
+    return _notifications.where((n) => n.timestamp.isAfter(oneWeekAgo)).toList();
   }
 
-  // Tümünü okundu işaretle
+  // GÜNCELLENDİ: Okundu yapınca sayacı sıfırla
   void markAllAsRead() {
     for (var n in _notifications) {
       n.isRead = true;
     }
+    unreadCountNotifier.value = 0; // Arayüze haber ver: Sayı 0 oldu!
   }
 
-  // Helper: Tipe göre renk getir
+  // GÜNCELLENDİ: Yeni bildirim gelirse sayacı artır (İleride backend gelirse kullanılır)
+  void refreshCount() {
+    unreadCountNotifier.value = _notifications.where((n) => !n.isRead).length;
+  }
+
   Color getColorForType(NotificationType type) {
     switch (type) {
-      case NotificationType.critical:
-        return AppColors.neonRed;
-      case NotificationType.warning:
-        return Colors.orange;
-      case NotificationType.success:
-        return AppColors.neonGreen;
-      case NotificationType.info:
-        return AppColors.neonBlue;
+      case NotificationType.critical: return AppColors.neonRed;
+      case NotificationType.warning: return Colors.orange;
+      case NotificationType.success: return AppColors.neonGreen;
+      case NotificationType.info: return AppColors.neonBlue;
     }
   }
 
-  // Helper: Tipe göre ikon getir
   IconData getIconForType(NotificationType type) {
     switch (type) {
-      case NotificationType.critical:
-        return Icons.error_outline;
-      case NotificationType.warning:
-        return Icons.warning_amber_rounded;
-      case NotificationType.success:
-        return Icons.check_circle_outline;
-      case NotificationType.info:
-        return Icons.info_outline;
+      case NotificationType.critical: return Icons.error_outline;
+      case NotificationType.warning: return Icons.warning_amber_rounded;
+      case NotificationType.success: return Icons.check_circle_outline;
+      case NotificationType.info: return Icons.info_outline;
     }
   }
 }

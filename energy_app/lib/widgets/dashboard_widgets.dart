@@ -1,11 +1,15 @@
+import 'package:energy_app/screens/ragional_comparison_screen.dart';
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
 import 'glass_container.dart';
+
 // Ekranlar ve Servisler
 import '../screens/analysis_screen.dart';
 import '../screens/battery_analysis_screen.dart';
 import '../core/notification_service.dart';
 import '../screens/notification_screen.dart';
+import '../screens/optimization_history_screen.dart'; // Optimizasyon Geçmişi
+import '../screens/tariff_info_screen.dart'; // Tarife Detayı
 
 // Kart Tipi Enum'u
 enum EnergyCardType { production, consumption, gridSale }
@@ -41,14 +45,14 @@ class EnergyStatusCard extends StatelessWidget {
         PopupMenuItem(
           value: 'daily_forecast',
           child: Text(
-            '24s Tahmini ve Verim (İŞL.04)',
+            '24s Tahmini ve Verim',
             style: TextStyle(color: Colors.white70),
           ),
         ),
         PopupMenuItem(
           value: 'historical_report',
           child: Text(
-            'Tarihsel Üretim Raporu (İŞL.03)',
+            'Tarihsel Üretim Raporu',
             style: TextStyle(color: Colors.white70),
           ),
         ),
@@ -58,21 +62,21 @@ class EnergyStatusCard extends StatelessWidget {
         PopupMenuItem(
           value: 'consumption_distribution',
           child: Text(
-            'Tüketim Dağılımı (Cihaz) (İŞL.13)',
+            'Tüketim Dağılımı (Cihaz)',
             style: TextStyle(color: Colors.white70),
           ),
         ),
         PopupMenuItem(
           value: 'audit_report',
           child: Text(
-            'Enerji Denetim Raporu (İŞL.13)',
+            'Enerji Denetim Raporu',
             style: TextStyle(color: Colors.white70),
           ),
         ),
         PopupMenuItem(
           value: 'regional_comparison',
           child: Text(
-            'Bölgesel Kıyaslama (İŞL.08)',
+            'Bölgesel Kıyaslama',
             style: TextStyle(color: Colors.white70),
           ),
         ),
@@ -82,21 +86,21 @@ class EnergyStatusCard extends StatelessWidget {
         PopupMenuItem(
           value: 'net_metering',
           child: Text(
-            'Tarife ve Mahsuplaşma Detayı (İŞL.02)',
+            'Tarife ve Mahsuplaşma Detayı',
             style: TextStyle(color: Colors.white70),
           ),
         ),
         PopupMenuItem(
           value: 'optimization_history',
           child: Text(
-            'Optimizasyon Geçmişi (İŞL.12)',
+            'Optimizasyon Geçmişi',
             style: TextStyle(color: Colors.white70),
           ),
         ),
         PopupMenuItem(
           value: 'battery_management',
           child: Text(
-            'Batarya Şarj Yönetimi (İŞL.06)',
+            'Batarya Şarj Yönetimi',
             style: TextStyle(color: Colors.white70),
           ),
         ),
@@ -134,7 +138,34 @@ class EnergyStatusCard extends StatelessWidget {
             ),
           );
         }
-        // 4. TARİHSEL RAPOR (Liste Ekleme)
+        // 4. BÖLGESEL KIYASLAMA EKRANINA GİT (YENİ)
+        else if (result == 'regional_comparison') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const RegionalComparisonScreen(),
+            ),
+          );
+        }
+        // 5. TARİFE DETAY EKRANINA GİT (YENİ)
+        else if (result == 'net_metering') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const TariffInfoScreen(),
+            ),
+          );
+        }
+        // 6. OPTİMİZASYON GEÇMİŞİ EKRANINA GİT (YENİ)
+        else if (result == 'optimization_history') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const OptimizationHistoryScreen(),
+            ),
+          );
+        }
+        // 7. TARİHSEL RAPOR (Liste Ekleme)
         else if (result == 'historical_report') {
           AnalysisScreen.globalReports.insert(0, {
             'title': 'Manuel Oluşturulan Üretim Raporu',
@@ -152,7 +183,7 @@ class EnergyStatusCard extends StatelessWidget {
             ),
           );
         }
-        // 5. DENETİM RAPORU (Liste Ekleme)
+        // 8. DENETİM RAPORU (Liste Ekleme)
         else if (result == 'audit_report') {
           AnalysisScreen.globalReports.insert(0, {
             'title': 'Enerji Verimlilik ve Denetim Raporu',
@@ -785,8 +816,11 @@ class ProductionForecastDialog extends StatelessWidget {
                     flex: 1,
                     child: Text(
                       "Verim",
-                      style: TextStyle(color: Colors.white38, fontSize: 12),
                       textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Colors.white38,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],
